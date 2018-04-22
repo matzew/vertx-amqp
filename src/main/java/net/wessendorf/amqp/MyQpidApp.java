@@ -6,6 +6,7 @@ import io.vertx.proton.ProtonClient;
 import io.vertx.proton.ProtonConnection;
 import io.vertx.proton.ProtonSender;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
+import org.apache.qpid.proton.amqp.messaging.Section;
 import org.apache.qpid.proton.message.Message;
 
 import java.util.logging.Logger;
@@ -48,6 +49,18 @@ public class MyQpidApp extends AbstractVerticle {
                                 });
                             }
                         }).open();
+
+
+                        // receive
+                        connection.createReceiver("myQueue").handler((delivery, msg) -> {
+                            Section body = msg.getBody();
+                            if (body instanceof AmqpValue) {
+                                System.out.println("Received message with content: " + ((AmqpValue) body).getValue());
+                            }
+                            // By default, the receiver automatically accepts (and settles) the delivery
+                            // when the handler returns if no other disposition has already been applied.
+                        }).open();
+
 
                     }
                 }).open();
