@@ -55,7 +55,7 @@ public class MyQpidApp extends AbstractVerticle {
                         connection.createReceiver("myQueue").handler((delivery, msg) -> {
                             Section body = msg.getBody();
                             if (body instanceof AmqpValue) {
-                                System.out.println("Received message with content: " + ((AmqpValue) body).getValue());
+                                System.out.println("Received message with content: " + ((AmqpValue) body).getValue() + " from: " + msg.getCreationTime());
                             }
                             // By default, the receiver automatically accepts (and settles) the delivery
                             // when the handler returns if no other disposition has already been applied.
